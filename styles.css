@@ -357,8 +357,40 @@ footer {
         height: 20px;
     }
 }
+/*glowing button*/
+        .body1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20vh;
+            background-color: #222435;
+   
+        }
+        .glowing-link {
+            text-align: center;
+            width: 270px;
+            font-family: arial;
+            position: relative;
+            padding: x;
+            font-size: 15px;
+            font-weight: normal;
+            color: black;
+            background: white;
+            text-decoration: none;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            animation: glow 2s infinite alternate;
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #ff0000; }
+            25% { box-shadow: 0 0 20px #00ff00; }
+            50% { box-shadow: 0 0 30px black; }
+            75% { box-shadow: 0 0 20px #ff00ff; }
+            100% { box-shadow: 0 0 10px #ffff00; }
+        }
+        
 .marquee{
+    color: #00EABE;
+    font-family: Arial;
     font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #00FFAC;
 }

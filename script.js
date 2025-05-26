@@ -1,7 +1,6 @@
 // User data
 let currentUser = null;
 const onlineUsers = [];
-let socket = null;
 
 // Bot responses
 const botResponses = {
@@ -20,14 +19,14 @@ function login() {
 
     if (username && phone) {
         currentUser = {
-            id: Date.now().toString(),
+            id: Date.now(),
             name: username,
             phone: phone,
             online: true
         };
 
-        // Initialize socket connection (simulated)
-        initializeSocket();
+        // Add user to online users
+        onlineUsers.push(currentUser);
 
         // Show the app
         document.getElementById('login-page').style.display = 'none';
@@ -36,30 +35,14 @@ function login() {
         // Update online users list
         updateOnlineUsers();
 
+        // Simulate other users coming online/offline
+        simulateUserActivity();
+
         // Start bot updates
         startBotUpdates();
     } else {
         alert('Please enter both your name and phone number');
     }
-}
-
-// Simulated socket connection
-function initializeSocket() {
-    // In a real app, this would connect to your backend
-    // socket = io('http://your-backend-url');
-    
-    // For simulation, we'll use browser storage
-    console.log("Socket connection simulated");
-    
-    // Listen for new messages
-    window.addEventListener('storage', (event) => {
-        if (event.key === 'new_message') {
-            const message = JSON.parse(event.newValue);
-            if (message.recipient === 'all' || message.recipient === currentUser.id) {
-                addMessageToChat(message.sender, message.text, false);
-            }
-        }
-    });
 }
 
 // Update online users list
@@ -77,10 +60,9 @@ function updateOnlineUsers() {
     `;
     onlineUsersContainer.appendChild(botElement);
 
-    // Add real users from localStorage
-    const users = JSON.parse(localStorage.getItem('online_users') || '[]');
-    users.forEach(user => {
-        if (user.id !== currentUser.id) {
+    // Add real users
+    onlineUsers.forEach(user => {
+        if (user.online) {
             const userElement = document.createElement('div');
             userElement.className = 'user';
             userElement.innerHTML = `
@@ -88,66 +70,16 @@ function updateOnlineUsers() {
                 <span>${user.name}</span>
                 <div class="status-indicator"></div>
             `;
-            userElement.onclick = () => startPrivateChat(user);
             onlineUsersContainer.appendChild(userElement);
         }
     });
 }
 
-// Start private chat with a user
-function startPrivateChat(user) {
-    const chatHeader = document.createElement('div');
-    chatHeader.className = 'message received';
-    chatHeader.innerHTML = `
-        <div class="message-sender">System</div>
-        <div class="message-text">Now chatting with ${user.name}</div>
-    `;
-    document.getElementById('messages').appendChild(chatHeader);
-    currentChatPartner = user.id;
-}
-
-// Send message to server (simulated)
-function sendMessageToServer(message, recipient = 'all') {
-    // In a real app: socket.emit('message', {text: message, recipient});
-    
-    // For simulation, use localStorage to mimic message passing
-    const messageObj = {
-        sender: currentUser.id,
-        senderName: currentUser.name,
-        text: message,
-        recipient: recipient,
-        timestamp: Date.now()
-    };
-    
-    // Store the message
-    const messages = JSON.parse(localStorage.getItem('chat_messages') || '[]');
-    messages.push(messageObj);
-    localStorage.setItem('chat_messages', JSON.stringify(messages));
-    
-    // Trigger storage event to simulate real-time
-    localStorage.setItem('new_message', JSON.stringify({
-        sender: currentUser.name,
-        text: message,
-        recipient: recipient
-    }));
-    
-    // Clear the storage after a short delay
-    setTimeout(() => {
-        localStorage.removeItem('new_message');
-    }, 100);
-}
-
-// Add message to chat UI
-function addMessageToChat(sender, message, isCurrentUser = false) {
-    const messagesContainer = document.getElementById('messages');
-    const newMessage = document.createElement('div');
-    newMessage.className = isCurrentUser ? 'message sent' : 'message received';
-    newMessage.innerHTML = `
-        <div class="message-sender">${sender}</div>
-        <div class="message-text">${message}</div>
-    `;
-    messagesContainer.appendChild(newMessage);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+// Simulate user activity
+function simulateUserActivity() {
+    setInterval(() => {
+        updateOnlineUsers();
+    }, 5000);
 }
 
 // Start bot updates
@@ -164,8 +96,21 @@ function startBotUpdates() {
         ];
         
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        addMessageToChat("StudyBot", randomMessage, false);
+        addBotMessage(randomMessage);
     }, 300000); // Every 5 minutes
+}
+
+// Add bot message to chat
+function addBotMessage(message) {
+    const messagesContainer = document.getElementById('messages');
+    const newMessage = document.createElement('div');
+    newMessage.className = 'message received';
+    newMessage.innerHTML = `
+        <div class="message-sender">StudyBot</div>
+        <div class="message-text">${message}</div>
+    `;
+    messagesContainer.appendChild(newMessage);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 // Simple tab switching
@@ -198,18 +143,29 @@ function sendMessage() {
     const message = input.value.trim();
     
     if (message) {
-        // Add to UI immediately
-        addMessageToChat(currentUser.name, message, true);
+        const messagesContainer = document.getElementById('messages');
+        const newMessage = document.createElement('div');
+        newMessage.className = 'message sent';
+        newMessage.innerHTML = `
+            <div class="message-sender">${currentUser.name}</div>
+            <div class="message-text">${message}</div>
+        `;
+        messagesContainer.appendChild(newMessage);
         input.value = '';
+        
+        // Scroll to bottom
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
         
         // Check for bot commands
         if (message.toLowerCase() in botResponses) {
             setTimeout(() => {
-                addMessageToChat("StudyBot", botResponses[message.toLowerCase()], false);
+                addBotMessage(botResponses[message.toLowerCase()]);
             }, 1000);
         } else {
-            // Send to other users (simulated)
-            sendMessageToServer(message);
+            // Add default bot response if not a command
+            setTimeout(() => {
+                addBotMessage(botResponses['default']);
+            }, 1000);
         }
     }
 }
@@ -226,17 +182,5 @@ window.onload = function() {
     const messagesContainer = document.getElementById('messages');
     if (messagesContainer) {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-    
-    // Load any existing messages
-    const messages = JSON.parse(localStorage.getItem('chat_messages') || '[]');
-    messages.forEach(msg => {
-        const isCurrentUser = msg.sender === currentUser?.id;
-        addMessageToChat(isCurrentUser ? 'You' : msg.senderName, msg.text, isCurrentUser);
-    });
-    
-    // Initialize online users list
-    if (!localStorage.getItem('online_users')) {
-        localStorage.setItem('online_users', JSON.stringify([]));
     }
 };
