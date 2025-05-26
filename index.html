@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuk Student Connect</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <marquee behavior="" direction="" class="marquee">© CornelliusMusyoka2025</marquee>
+    <div id="login-page" class="login-container">
+        <div class="login-box">
+            <h2>TUK
+            Student Connect</h2>
+            <input type="text" id="username" placeholder="Your Name" required>
+            <input type="tel" id="phone" placeholder="Phone Number" required>
+            <button onclick="login()">Enter Chat</button>
+        </div>
+    </div>
+
+    <div id="app" style="display: none;">
+        <header>
+            <h1>TUK Student Connect</h1>
+            <p>Chat • Relax • Learn • Grow</p>
+        </header>
+
+        <div class="container">
+            <div class="sidebar">
+                <h3>Online Now</h3>
+                <div class="online-users" id="online-users">
+                    <!-- Users will be added here dynamically -->
+                </div>
+
+                <h3 style="margin-top: 2rem;">Quick Links</h3>
+                <div class="card" onclick="switchTab('chat')">
+                    <h3>Group Chat</h3>
+                    <p>Connect with fellow students</p>
+                </div>
+                <div class="card" onclick="switchTab('movies')">
+                    <h3>Movie Recommendations</h3>
+                    <p>What to watch next</p>
+                </div>
+                <div class="card" onclick="switchTab('books')">
+                    <h3>Motivational Books</h3>
+                    <p>Expand your mind</p>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('chat')">Chat</div>
+                    <div class="tab" onclick="switchTab('movies')">Movies</div>
+                    <div class="tab" onclick="switchTab('music')">Music</div>
+                    <div class="tab" onclick="switchTab('games')">Games</div>
+                    <div class="tab" onclick="switchTab('books')">Library</div>
+                </div>
+
+                <div id="chat" class="tab-content active">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="messages">
+                            <div class="message received">
+                                <div class="message-sender">StudyBot</div>
+                                <div class="message-text">Karibu to Student Connect! I'm StudyBot, here to help with your academic journey. Type 'help' to see what I can do.</div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="message-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                            <button onclick="sendMessage()">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="movies" class="tab-content">
+                    <h2>Movie Recommendations</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <img src="https://m.media-amazon.com/images/M/MV5BOGUyZDUxZjEtMmIzMC00MzlmLTg4MGItZWJmMzBhZjlhYWEwXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" class="card-img" alt="The Social Network">
+                            <h3>The Social Network</h3>
+                            <p>Great for aspiring entrepreneurs</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/lB95KLmpLR4?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="card">
+                            <img src="https://m.media-amazon.com/images/M/MV5BMTAwMTU4MDA3NDNeQTJeQWpwZ15BbWU4MDk4NTMxNTIx._V1_FMjpg_UX1000_.jpg" class="card-img" alt="The Theory of Everything">
+                            <h3>The Theory of Everything</h3>
+                            <p>Inspirational science story</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/Salz7uGp72c?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="card">
+                            <img src="https://m.media-amazon.com/images/M/MV5BOGYwYWNjMzgtNGU4ZC00NWQ2LWEwZjUtMzE1Zjc3NjY3YTU1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg" class="card-img" alt="Dead Poets Society">
+                            <h3>Dead Poets Society</h3>
+                            <p>About the power of education</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/4lj185DaZ_o?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="card">
+                            <img src="https://m.media-amazon.com/images/M/MV5BMzg2Mzg4YmUtNDdkNy00NWY1LWE3NmEtZWMwNGNlMzE5ZTEwXkEyXkFqcGdeQXVyMjA5MTIzMjQ@._V1_.jpg" class="card-img" alt="Hidden Figures">
+                            <h3>Hidden Figures</h3>
+                            <p>Women in STEM history</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/RK8xHq6dfAo?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="music" class="tab-content">
+                    <h2>Focus & Relaxation Music</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <img src="https://i.ytimg.com/vi/jfKfPfyJRdk/maxresdefault.jpg" class="card-img" alt="Lofi Study Beats">
+                            <h3>Lofi Study Beats</h3>
+                            <p>Chill beats to study to</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="card">
+                            <img src="https://i.ytimg.com/vi/WPni755-Krg/maxresdefault.jpg" class="card-img" alt="Classical Focus">
+                            <h3>Classical Focus</h3>
+                            <p>Mozart, Beethoven, Bach</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/WPni755-Krg?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="card">
+                            <img src="https://i.ytimg.com/vi/1ZYbU82GVz4/maxresdefault.jpg" class="card-img" alt="Nature Sounds">
+                            <h3>Nature Sounds</h3>
+                            <p>Rain, ocean, forest</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/1ZYbU82GVz4?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="card">
+                            <img src="https://i.ytimg.com/vi/4ROI3GAYDqk/maxresdefault.jpg" class="card-img" alt="Binaural Beats">
+                            <h3>Binaural Beats</h3>
+                            <p>For concentration</p>
+                            <iframe class="media-player" src="https://www.youtube.com/embed/4ROI3GAYDqk?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="games" class="tab-content">
+                    <h2>Brain-Boosting Games</h2>
+                    <div class="grid">
+                        <div class="card" onclick="window.open('https://www.chess.com', '_blank')">
+                            <img src="https://images.chesscomfiles.com/uploads/v1/images_users/tiny_mce/SamCopeland/phpmeXx6V.png" class="card-img" alt="Chess">
+                            <h3>Chess</h3>
+                            <p>Strategic thinking</p>
+                            <a href="https://www.chess.com" target="_blank">Play Now</a>
+                        </div>
+                        <div class="card" onclick="window.open('https://www.nytimes.com/games/sudoku', '_blank')">
+                            <img src="https://www.nytimes.com/games-assets/v2/assets/wordle/sudoku-tile.png" class="card-img" alt="Sudoku">
+                            <h3>Sudoku</h3>
+                            <p>Logical reasoning</p>
+                            <a href="https://www.nytimes.com/games/sudoku" target="_blank">Play Now</a>
+                        </div>
+                        <div class="card" onclick="window.open('https://www.nytimes.com/games/wordle', '_blank')">
+                            <img src="https://www.nytimes.com/games-assets/v2/assets/wordle/wordle-tile.png" class="card-img" alt="Wordle">
+                            <h3>Wordle</h3>
+                            <p>Vocabulary builder</p>
+                            <a href="https://www.nytimes.com/games/wordle" target="_blank">Play Now</a>
+                        </div>
+                        <div class="card" onclick="window.open('https://play2048.co', '_blank')">
+                            <img src="https://play2048.co/thumbnail.png" class="card-img" alt="2048">
+                            <h3>2048</h3>
+                            <p>Math and strategy</p>
+                            <a href="https://play2048.co" target="_blank">Play Now</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="books" class="tab-content">
+                    <h2>Motivational Library</h2>
+                    <div class="grid">
+                        <div class="card" onclick="window.open('https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299', '_blank')">
+                            <img src="https://m.media-amazon.com/images/I/51-uspgqWIL._SY425_.jpg" class="card-img" alt="Atomic Habits">
+                            <h3>Atomic Habits</h3>
+                            <p>James Clear</p>
+                            <a href="https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299" target="_blank">View Book</a>
+                        </div>
+                        <div class="card" onclick="window.open('https://www.amazon.com/Deep-Work-Focused-Success-Distracted/dp/1455586692', '_blank')">
+                            <img src="https://m.media-amazon.com/images/I/41d1gVUK1yL._SY425_.jpg" class="card-img" alt="Deep Work">
+                            <h3>Deep Work</h3>
+                            <p>Cal Newport</p>
+                            <a href="https://www.amazon.com/Deep-Work-Focused-Success-Distracted/dp/1455586692" target="_blank">View Book</a>
+                        </div>
+                        <div class="card" onclick="window.open('https://www.amazon.com/Habits-Highly-Effective-People-Powerful/dp/0743269519', '_blank')">
+                            <img src="https://m.media-amazon.com/images/I/51k5IdkF8FL._SY425_.jpg" class="card-img" alt="7 Habits">
+                            <h3>The 7 Habits of Highly Effective People</h3>
+                            <p>Stephen Covey</p>
+                            <a href="https://www.amazon.com/Habits-Highly-Effective-People-Powerful/dp/0743269519" target="_blank">View Book</a>
+                        </div>
+                        <div class="card" onclick="window.open('https://www.amazon.com/Mindset-Psychology-Carol-S-Dweck/dp/0345472322', '_blank')">
+                            <img src="https://m.media-amazon.com/images/I/51Dl6lXXesL._SY425_.jpg" class="card-img" alt="Mindset">
+                            <h3>Mindset</h3>
+                            <p>Carol Dweck</p>
+                            <a href="https://www.amazon.com/Mindset-Psychology-Carol-S-Dweck/dp/0345472322" target="_blank">View Book</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div>© CornelliusMusyoka 2025</div>
+            <div class="tech-icons">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" alt="VS Code" title="Inspired by Visual Studio Code">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind CSS" title="Inspired by Tailwind CSS">
+                <img src="https://www.netlify.com/v3/img/components/logomark-dark.svg" alt="Netlify" title="Inspired by Netlify">
+                <img src="https://seeklogo.com/images/D/deepseek-logo-0B3F8D9F3B-seeklogo.com.png" alt="DeepSeek" title="Inspired by DeepSeek">
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
